@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Belajar1": {
+      "commandName": "Project",
+      "sqlDebugging": true
+    },
+    "Profile 1": {
+      "commandName": "Project"
+    }
+  }
+}
