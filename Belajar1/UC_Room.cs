@@ -14,10 +14,10 @@ namespace Belajar1
     public partial class UC_Room : UserControl
     {
         public SqlConnection cnn;
-        Connection conn;
         int action = 0;
         int? id;
          
+        Connection conn;
         public UC_Room()
         {
             conn = new Connection();

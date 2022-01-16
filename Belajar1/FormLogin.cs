@@ -75,7 +75,7 @@ namespace Belajar1
 
         private void add_user(string username, string password, string name, string email, string address)
         {
-            string sqlQUery = $"insert into employee values ('{username}','{HashedPassword(password)}','{name}','{email}','{address}','2004-05-23',1)";
+            string sqlQUery = $"insert into employee values ('{username}','{HashedPassword(password)}','{name}','{email}','{address}','2004-05-23',2)";
             SqlCommand cmd = new SqlCommand(sqlQUery, cnn);
             cmd.ExecuteNonQuery();
             MessageBox.Show("Employee Registered Successfully");

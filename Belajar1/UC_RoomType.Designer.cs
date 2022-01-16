@@ -222,7 +222,6 @@
             this.Controls.Add(this.roomPrice);
             this.Controls.Add(this.search_box);
             this.Controls.Add(this.btn_cancel);
-            this.Controls.Add(this.btn_save);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_update);
             this.Controls.Add(this.btn_insert);
@@ -233,6 +232,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.btn_save);
             this.Name = "UC_RoomType";
             this.Size = new System.Drawing.Size(832, 531);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

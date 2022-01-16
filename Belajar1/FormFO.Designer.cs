@@ -39,6 +39,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.uC_Reservation1 = new Belajar1.UC_Reservation();
+            this.uC_Item1 = new Belajar1.UC_Item();
             this.uC_Room1 = new Belajar1.UC_Room();
             this.uC_RoomType1 = new Belajar1.UC_RoomType();
             this.panel1.SuspendLayout();
@@ -133,16 +134,18 @@
             this.btn_masterItem.TabIndex = 7;
             this.btn_masterItem.Text = "Master Item";
             this.btn_masterItem.UseVisualStyleBackColor = false;
+            this.btn_masterItem.Click += new System.EventHandler(this.btn_masterItem_Click);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.uC_RoomType1);
-            this.panel1.Controls.Add(this.uC_Reservation1);
             this.panel1.Controls.Add(this.uC_Room1);
+            this.panel1.Controls.Add(this.uC_Item1);
+            this.panel1.Controls.Add(this.uC_Reservation1);
             this.panel1.Location = new System.Drawing.Point(159, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(976, 565);
-            this.panel1.TabIndex = 8;
+            this.panel1.Size = new System.Drawing.Size(851, 613);
+            this.panel1.TabIndex = 0;
             // 
             // uC_Reservation1
             // 
@@ -150,8 +153,17 @@
             this.uC_Reservation1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uC_Reservation1.Location = new System.Drawing.Point(0, 0);
             this.uC_Reservation1.Name = "uC_Reservation1";
-            this.uC_Reservation1.Size = new System.Drawing.Size(976, 565);
-            this.uC_Reservation1.TabIndex = 1;
+            this.uC_Reservation1.Size = new System.Drawing.Size(851, 613);
+            this.uC_Reservation1.TabIndex = 0;
+            // 
+            // uC_Item1
+            // 
+            this.uC_Item1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.uC_Item1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uC_Item1.Location = new System.Drawing.Point(0, 0);
+            this.uC_Item1.Name = "uC_Item1";
+            this.uC_Item1.Size = new System.Drawing.Size(851, 613);
+            this.uC_Item1.TabIndex = 1;
             // 
             // uC_Room1
             // 
@@ -159,8 +171,8 @@
             this.uC_Room1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uC_Room1.Location = new System.Drawing.Point(0, 0);
             this.uC_Room1.Name = "uC_Room1";
-            this.uC_Room1.Size = new System.Drawing.Size(976, 565);
-            this.uC_Room1.TabIndex = 0;
+            this.uC_Room1.Size = new System.Drawing.Size(851, 613);
+            this.uC_Room1.TabIndex = 2;
             // 
             // uC_RoomType1
             // 
@@ -168,15 +180,15 @@
             this.uC_RoomType1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uC_RoomType1.Location = new System.Drawing.Point(0, 0);
             this.uC_RoomType1.Name = "uC_RoomType1";
-            this.uC_RoomType1.Size = new System.Drawing.Size(976, 565);
-            this.uC_RoomType1.TabIndex = 2;
+            this.uC_RoomType1.Size = new System.Drawing.Size(851, 613);
+            this.uC_RoomType1.TabIndex = 3;
             // 
             // FormFO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1135, 610);
+            this.ClientSize = new System.Drawing.Size(1023, 655);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btn_masterItem);
             this.Controls.Add(this.btn_masterRoom);
@@ -188,6 +200,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormFO";
             this.Text = "FormFO";
+            this.Load += new System.EventHandler(this.FormFO_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -206,8 +219,9 @@
         private Button btn_masterItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Panel panel1;
-        private UC_Reservation uC_Reservation1;
-        private UC_Room uC_Room1;
         private UC_RoomType uC_RoomType1;
+        private UC_Room uC_Room1;
+        private UC_Item uC_Item1;
+        private UC_Reservation uC_Reservation1;
     }
 }

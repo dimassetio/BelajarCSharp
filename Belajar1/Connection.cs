@@ -15,13 +15,33 @@ namespace Belajar1
         public SqlConnection cnn;
         public Connection() {
             string connectionString;
-            
-            connectionString = @"Data Source=LAPTOP-5NPLVPMR\SQLEXPRESS;Initial Catalog=HotelDB;Integrated Security=True";
+            // Laptop Bu Tyas
+            //connectionString = @"Data Source=LAPTOP-5NPLVPMR\SQLEXPRESS;Initial Catalog=HotelDB;Integrated Security=True";
+            // PCKU
+            connectionString = @"Data Source=DESKTOP-QN64H9P\SQLEXPRESS;Initial Catalog=HotelDB;Integrated Security=True";
 
             cnn = new SqlConnection(connectionString);
            // cnn.Open();
            // MessageBox.Show("Connection Open  !");
            // cnn.Close();
+        }
+
+        public SqlConnection getConnection() {
+            return cnn;
+        }
+
+        public void openConn()
+        {
+            if (cnn.State == System.Data.ConnectionState.Closed )
+            {
+                cnn.Open();
+            }
+        }public void closeConn()
+        {
+            if (cnn.State == System.Data.ConnectionState.Open )
+            {
+                cnn.Close();
+            }
         }
 
         public void insertData(string tablename, string values, SqlConnection cnn)

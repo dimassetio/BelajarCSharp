@@ -15,12 +15,11 @@ namespace Belajar1
         public FormFO()
         {
             InitializeComponent();
-            uC_Reservation1.BringToFront();
         }
 
         private void btn_reservation_Click(object sender, EventArgs e)
         {
-            uC_Reservation1.BringToFront();
+           uC_Reservation1.BringToFront();
         }
 
         private void btn_masterRoomType_Click(object sender, EventArgs e)
@@ -31,6 +30,17 @@ namespace Belajar1
         private void btn_masterRoom_Click(object sender, EventArgs e)
         {
             uC_Room1.BringToFront();
+        }
+
+        private void FormFO_Load(object sender, EventArgs e)
+        {
+
+            uC_Reservation1.BringToFront();
+        }
+
+        private void btn_masterItem_Click(object sender, EventArgs e)
+        {
+            uC_Item1.BringToFront();
         }
     }
 }
