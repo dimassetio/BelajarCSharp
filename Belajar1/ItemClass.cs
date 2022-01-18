@@ -28,12 +28,12 @@ namespace Belajar1
             conn.openConn();
             if(cmd.ExecuteNonQuery() > 0)
             {
-                return true;
                 conn.closeConn();
+                return true;
             } else
             {
-                return false;
                 conn.closeConn();
+                return false;
             }
         } public bool update(string name, int price, int compensation, int id)
         {

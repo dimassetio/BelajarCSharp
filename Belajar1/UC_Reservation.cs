@@ -13,49 +13,58 @@ namespace Belajar1
 {
     public partial class UC_Reservation : UserControl
     {
-         Connection conn;
-      public  SqlConnection cnn;
-
-        public string roomQuery = "select roomNumber, roomFloor, description from room";
+        ReservationClass _reservation = new ReservationClass();
+        DataTable availTable = new DataTable();
+        DataTable selectedTable = new DataTable();
+        DataTable custTable = new DataTable();
         public UC_Reservation()
         {
-            conn = new Connection();
-            cnn = conn.cnn;
-            cnn.Open();
+          
             InitializeComponent();
 
         }
 
-        private void loadTable(DataGridView dg, string query) {
-            SqlCommand cmd = new SqlCommand(query, cnn);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable ds = new DataTable();
-            da.Fill(ds);
-            dg.DataSource = ds;
 
-       }
-       private void loadRoomType()
+        private void loadRoomType()
         {
             roomType.SelectedIndexChanged -= roomType_SelectedIndexChanged;
 
-            SqlCommand cmd = new SqlCommand("select * from roomtype", cnn);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            roomType.DataSource = ds.Tables[0];
+            DataTable dt = _reservation.getTable("Select * From roomtype", new DataTable());
+            roomType.DataSource = dt;
             roomType.ValueMember = "id";
             roomType.DisplayMember = "name";
 
             roomType.SelectedIndexChanged += roomType_SelectedIndexChanged;
-        }private void loadItems()
-        {
-            SqlCommand cmd = new SqlCommand("select * from item", cnn);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            items.DataSource = ds.Tables[0];
-            items.DisplayMember = "name";
         }
+        private void loadItems()
+        {
+            DataTable data = _reservation.getTable("Select id, name, requestPrice From item", new DataTable());
+            items.DataSource = data;
+            items.DisplayMember = "name";
+            //dt.Columns.Add("id");
+            //dt.Columns.Add("Name");
+            //dt.Columns.Add("Price");
+            //dt.Columns.Add("Qty");
+            //dt = _reservation.getTable("Select  id, name, requestPrice From item where id = 0", dt);
+            //itemTable.DataSource = dt;
+        }
+
+        private void loadAvailTable()
+        {
+            availTable = _reservation.getTable("Select * From Room", new DataTable());
+            availRoomTable.DataSource = availTable;
+        }
+        private void loadCustTable() {
+            custTable = _reservation.getTable("Select * From Customer", new DataTable());
+            userTable.DataSource = custTable;
+        }
+        private void loadSelectedTable()
+        {
+            selectedTable = _reservation.getTable("Select * From Room where roomTypeID = 0", new DataTable());
+            selectedRoomTable.DataSource = selectedTable;
+        }
+
+
 
         DataTable dt = new DataTable();
         private void bindItemTable()
@@ -64,7 +73,7 @@ namespace Belajar1
                 new DataColumn("Id", typeof(int)),
                 new DataColumn("Name", typeof(string)),
                 new DataColumn("Price", typeof(int)),
-                new DataColumn("CompensationFee", typeof(int)),
+                new DataColumn("Quantity", typeof(int)),
             });
 
             itemTable.DataSource = dt;
@@ -73,37 +82,40 @@ namespace Belajar1
 
         private void roomType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            loadTable(availRoomTable, $"{roomQuery} where roomtypeID = {roomType.SelectedValue}");
+           // availTable.Clear();
+            
+            availTable = _reservation.getTable($"Select * From Room where roomTypeID = {roomType.SelectedValue}", new DataTable());
+            availRoomTable.DataSource = availTable;
+            System.Diagnostics.Debug.WriteLine($"Select * From Room where roomTypeID = {roomType.SelectedValue}");
         }
 
         private void btn_addItem_Click(object sender, EventArgs e)
         {
             DataRowView vrow = (DataRowView)items.SelectedItem;
-            DataRow row = vrow.Row;
-            dt.Rows.Add(row);
+
+            DataRow row = dt.NewRow(); 
+            row["id"] = vrow.Row["id"];
+            row["name"] = vrow.Row["name"];
+            row["price"] = vrow.Row["requestprice"];
+            row["quantity"] = qty_item.Value;
+            
+            System.Diagnostics.Debug.WriteLine(row.ItemArray);
+            dt.Rows.Add(row.ItemArray);
             itemTable.DataSource = dt;
         }
 
         private void UC_Reservation_Load(object sender, EventArgs e)
         {
+            bindItemTable();
             loadRoomType();
-            loadTable(availRoomTable, "select roomNumber, roomFloor, description from room");
-                 //loadTable(selectedRoomTable, "select roomNumber, roomFloor, description from room where id = 0");
-            loadTable(userTable, "select * from customer");
-                //loadItems();
+            loadAvailTable();
+            loadCustTable();
+            loadSelectedTable();
+            loadItems();
             radioButton1.Checked = true;
         }
 
-        private void selectBtn_Click(object sender, EventArgs e)
-        {
-            if(availRoomTable.SelectedRows != null)
-            {
-                selectedRoomTable.Rows.Add(availRoomTable.SelectedRows);
-                //selectedRoomTable.Rows[n].Cells[0].Value = availRoomTable.SelectedRows.CopyTo(selectedRoomTable, n); 
-                //selectedRoomTable.Rows[n].Cells[1].Value = availRoomTable.SelectedRows[1]; 
-                //selectedRoomTable.Rows[n].Cells[2].Value = availRoomTable.SelectedRows[2]; 
-            }
-        }
+        
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
@@ -123,6 +135,73 @@ namespace Belajar1
                 lbl_phone.Visible = true;
                 cust_phone.Visible = true;
                 cust_name.Visible = true;
+            }
+        }
+        private void selectBtn_Click(object sender, EventArgs e)
+        {
+            if (availRoomTable.CurrentCell != null) 
+            {
+                selectedTable.Rows.Add(((DataRowView)availRoomTable.SelectedRows[0].DataBoundItem).Row.ItemArray);
+                availRoomTable.Rows.RemoveAt(availRoomTable.CurrentCell.RowIndex);
+            }
+        }
+
+        private void unselectBtn_Click(object sender, EventArgs e)
+        {
+            if (selectedRoomTable.SelectedRows != null)
+            {
+                availTable.Rows.Add(((DataRowView)selectedRoomTable.SelectedRows[0].DataBoundItem).Row.ItemArray);
+                selectedRoomTable.Rows.RemoveAt(selectedRoomTable.CurrentCell.RowIndex);
+            }
+        }
+
+        private void calculatePrice()
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (DataRow row in selectedTable.Rows)
+                {
+                    sb.Append(row["id"].ToString() + ',');
+                }
+                int totalItem = 0;
+                foreach ( DataRow item in dt.Rows)
+                {
+                    totalItem = totalItem + ((int)item["price"] * (int)item["quantity"]); 
+                }
+                System.Diagnostics.Debug.WriteLine(sb.ToString().TrimEnd(','));
+                int totalRoom = _reservation.getInt($"Select SUM(roomPrice) from roomtype inner join room on room.roomTypeID = roomType.id where room.id IN ({sb.ToString().TrimEnd(',')})");
+                label11.Text = $"Rp {totalRoom + totalItem},-"; 
+            }
+            catch (Exception ex) 
+            { System.Diagnostics.Debug.WriteLine(ex.Message ); }
+        }
+
+        private void selectedRoomTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            calculatePrice();
+        }
+
+        private void btn_submit_Click(object sender, EventArgs e)
+        {
+            calculatePrice();
+        }
+
+        private void selectedRoomTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            calculatePrice();
+        }
+
+        private void selectedRoomTable_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            calculatePrice();
+        }
+
+        private void itemTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex == 0)
+            {
+                itemTable.Rows.RemoveAt(e.RowIndex);
             }
         }
     }

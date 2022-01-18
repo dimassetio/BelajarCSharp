@@ -40,16 +40,13 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.availRoomTable = new System.Windows.Forms.DataGridView();
             this.selectedRoomTable = new System.Windows.Forms.DataGridView();
-            this.roomNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.roomFloor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.userTable = new System.Windows.Forms.DataGridView();
             this.itemTable = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
             this.selectBtn = new System.Windows.Forms.Button();
             this.unselectBtn = new System.Windows.Forms.Button();
             this.items = new System.Windows.Forms.ComboBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.qty_item = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.btn_addItem = new System.Windows.Forms.Button();
@@ -65,11 +62,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.btn_submit = new System.Windows.Forms.Button();
+            this.act_delete = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.availRoomTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedRoomTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.itemTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qty_item)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_Reservation
@@ -183,31 +181,17 @@
             // 
             // selectedRoomTable
             // 
+            this.selectedRoomTable.AllowUserToAddRows = false;
+            this.selectedRoomTable.AllowUserToDeleteRows = false;
             this.selectedRoomTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.selectedRoomTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.roomNumber,
-            this.roomFloor,
-            this.description});
             this.selectedRoomTable.Location = new System.Drawing.Point(461, 166);
             this.selectedRoomTable.Name = "selectedRoomTable";
             this.selectedRoomTable.RowTemplate.Height = 25;
+            this.selectedRoomTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.selectedRoomTable.Size = new System.Drawing.Size(366, 157);
             this.selectedRoomTable.TabIndex = 10;
-            // 
-            // roomNumber
-            // 
-            this.roomNumber.HeaderText = "Room Number";
-            this.roomNumber.Name = "roomNumber";
-            // 
-            // roomFloor
-            // 
-            this.roomFloor.HeaderText = "Room Floor";
-            this.roomFloor.Name = "roomFloor";
-            // 
-            // description
-            // 
-            this.description.HeaderText = "Description";
-            this.description.Name = "description";
+            this.selectedRoomTable.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.selectedRoomTable_RowsAdded);
+            this.selectedRoomTable.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.selectedRoomTable_RowsRemoved);
             // 
             // userTable
             // 
@@ -220,12 +204,17 @@
             // 
             // itemTable
             // 
+            this.itemTable.AllowUserToAddRows = false;
+            this.itemTable.AllowUserToDeleteRows = false;
             this.itemTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.act_delete});
             this.itemTable.Location = new System.Drawing.Point(461, 425);
             this.itemTable.Name = "itemTable";
             this.itemTable.RowTemplate.Height = 25;
             this.itemTable.Size = new System.Drawing.Size(366, 99);
             this.itemTable.TabIndex = 12;
+            this.itemTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.itemTable_CellContentClick);
             // 
             // label5
             // 
@@ -257,6 +246,7 @@
             this.unselectBtn.TabIndex = 15;
             this.unselectBtn.Text = "<<";
             this.unselectBtn.UseVisualStyleBackColor = false;
+            this.unselectBtn.Click += new System.EventHandler(this.unselectBtn_Click);
             // 
             // items
             // 
@@ -266,12 +256,12 @@
             this.items.Size = new System.Drawing.Size(200, 23);
             this.items.TabIndex = 16;
             // 
-            // numericUpDown1
+            // qty_item
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(530, 396);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(200, 23);
-            this.numericUpDown1.TabIndex = 17;
+            this.qty_item.Location = new System.Drawing.Point(530, 396);
+            this.qty_item.Name = "qty_item";
+            this.qty_item.Size = new System.Drawing.Size(200, 23);
+            this.qty_item.TabIndex = 17;
             // 
             // label6
             // 
@@ -419,12 +409,22 @@
             this.btn_submit.TabIndex = 32;
             this.btn_submit.Text = "Submit";
             this.btn_submit.UseVisualStyleBackColor = false;
+            this.btn_submit.Click += new System.EventHandler(this.btn_submit_Click);
+            // 
+            // act_delete
+            // 
+            this.act_delete.HeaderText = "Delete";
+            this.act_delete.Name = "act_delete";
+            this.act_delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.act_delete.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.act_delete.Text = "X";
             // 
             // UC_Reservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.Controls.Add(this.roomType);
             this.Controls.Add(this.btn_submit);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -440,7 +440,7 @@
             this.Controls.Add(this.btn_addItem);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.qty_item);
             this.Controls.Add(this.items);
             this.Controls.Add(this.unselectBtn);
             this.Controls.Add(this.selectBtn);
@@ -454,7 +454,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.roomType);
             this.Controls.Add(this.startDate);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_Reservation);
@@ -465,7 +464,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.selectedRoomTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.userTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.itemTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qty_item)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -495,9 +494,6 @@
         private Label label6;
         private Label label7;
         private Button btn_addItem;
-        private DataGridViewTextBoxColumn roomNumber;
-        private DataGridViewTextBoxColumn roomFloor;
-        private DataGridViewTextBoxColumn description;
         private Label label8;
         private Label label9;
         private RadioButton radioButton1;
@@ -510,5 +506,7 @@
         private Label label10;
         private Label label11;
         private Button btn_submit;
+        private NumericUpDown qty_item;
+        private DataGridViewButtonColumn act_delete;
     }
 }

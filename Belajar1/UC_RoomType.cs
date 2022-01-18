@@ -93,7 +93,6 @@ namespace Belajar1
             action = 0;
             clearVariable();
             togglemodeButton();
-
             toggleActionButton();
         }
 
@@ -154,9 +153,7 @@ namespace Belajar1
             {
                 clearVariable();
             }
-        }
-
-    
+        }    
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
